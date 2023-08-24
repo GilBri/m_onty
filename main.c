@@ -32,38 +32,13 @@ int main(int argc, char *argv[])
 	{
 		line_number++;
 
-		/* Tokenize the line to extract opcode and arguments */
+		// Tokenize the line to extract opcode and arguments
 		char *opcode = strtok(line, " \t\n");
 		char *argument = strtok(NULL, " \t\n");
 
 		if (opcode)
 		{
-			instruction_t *instr = find_instruction(opcode);
-			if (instr)
-			{
-				if (strcmp(opcode, "push") == 0)
-				{
-					if (!argument)
-					{
-						fprintf(stderr, "L%u: usage: push integer\n", line_number);
-						free_resources(&stack, line);
-						fclose(file);
-						exit(EXIT_FAILURE);
-					}
-					instr->f(&stack, line_number);
-				}
-				else
-				{
-					instr->f(&stack, line_number);
-				}
-			}
-			else
-			{
-				fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
-				free_resources(&stack, line);
-				fclose(file);
-				exit(EXIT_FAILURE);
-			}
+			process_instruction(opcode, argument, &stack, line_number);
 		}
 	}
 
@@ -71,6 +46,7 @@ int main(int argc, char *argv[])
 	fclose(file);
 	exit(EXIT_SUCCESS);
 }
+
 
 /**
  * free_resources - Frees allocated resources.
