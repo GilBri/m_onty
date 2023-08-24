@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 	{
 		line_number++;
 
-		// Tokenize the line to extract opcode and arguments
 		char *opcode = strtok(line, " \t\n");
 		char *argument = strtok(NULL, " \t\n");
 
